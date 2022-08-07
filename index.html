@@ -4,13 +4,15 @@
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
   
 </head>
-<body onload="getOutputFromPachube();">
+<body>
 <script type="text/javascript">
     function getOutputFromPachube() {
+        alert("v1")
         $.getJSON('http://api.allorigins.win/get?url=http%3A//api.marketinout.com/run/screen%3Fkey%3D522a8f2bfe9e4867&callback=?', function (data) {
             $('#output').html(data.contents);
         });
     }
+    getOutputFromPachube()
 </script>
 
 <textarea id="output" cols="50" rows="10"></textarea>
