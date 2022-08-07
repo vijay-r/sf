@@ -1,18 +1,38 @@
 <html>
 <head>
-  <title>Pachube live reloading demo</title>
-  <script type="text/javascript" src="jquery-1.4.2.min.js"></script>
+  <script type="text/javascript" src="http://code.jquery.com/jquery-1.4.2.min.js"></script>
   
 </head>
 <body onload="getOutputFromPachube();">
 <script type="text/javascript">
 var my_url = "https://api.marketinout.com/run/screen?key=522a8f2bfe9e4867";
 
+function setHeader(xhr) {
+    xhr.setRequestHeader('Authorization', "*");
+}
+
 function getOutputFromPachube() {
+  alert(my_url)
   $.ajax({
-    url: my_url,
-    type: "GET",
+
+    'cache': false,
+    'dataType': "txt",
+    "async": true,
+    "crossDomain": true,
+    "url": my_url,
+    "method": "GET",
+    "headers": {
+        "accept": "application/json",
+        "Access-Control-Allow-Origin":"*"
+    },
+
+    // url: my_url,
+    // type: "GET",
+    // crossDomain: true,
+    // dataType: 'jsonp',
+
     success: function(obj) {
+      alert(obj)
       console.log("Success" + obj)
       successCallback(obj, "success");
     },
@@ -20,6 +40,7 @@ function getOutputFromPachube() {
       console.log("Error" + obj)
       errorCallback(obj, "error");
     },
+    beforeSend: setHeader
   });
 }
 
@@ -43,7 +64,7 @@ function errorCallback(XMLHttpRequest, strStatus, errorThrown) {
       "<br>object: " + XMLHttpRequest;
 }
 
-getOutputFromPachube()
+// getOutputFromPachube()
 // setInterval(getOutputFromPachube, 15000); // reload every 15 seconds
 </script>
 
