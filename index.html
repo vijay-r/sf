@@ -7,12 +7,15 @@
 <body>
 <script type="text/javascript">
     function getOutputFromPachube() {
-        alert("v2")
-        $.getJSON('http://api.allorigins.win/get?url=http%3A//api.marketinout.com/run/screen%3Fkey%3D522a8f2bfe9e4867&callback=?', function (data) {
+        alert("v3")
+        $.getJSON('https://api.allorigins.win/get?url=http%3A//api.marketinout.com/run/screen%3Fkey%3D522a8f2bfe9e4867&callback=?', function (data) {
             $('#output').html(data.contents);
         });
     }
-    getOutputFromPachube()
+    $(document).ready(function () {
+      getOutputFromPachube()
+    });
+
 </script>
 
 <textarea id="output" cols="50" rows="10"></textarea>
