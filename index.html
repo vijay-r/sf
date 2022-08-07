@@ -6,80 +6,14 @@
 </head>
 <body onload="getOutputFromPachube();">
 <script type="text/javascript">
-var my_url = "https://api.allorigins.win/get?url=http://api.marketinout.com/run/screen?key=522a8f2bfe9e4867";
-// my_url = "http://www.nytimes.com/"
-// my_url = "http://api.marketinout.com/run/screen?key=522a8f2bfe9e4867"
-
-function setHeader(xhr) {
-    xhr.setRequestHeader('Authorization', "*");
-}
-
-function getOutputFromPachube() {
-  alert("URL:" + my_url)
-  $.ajax({
-
-    'cache': false,
-    'dataType': "txt",
-    "async": true,
-    "crossDomain": true,
-    "url": my_url,
-    "method": "GET",
-    "headers": {
-        "accept": "application/json",
-        "Access-Control-Allow-Origin":"*"
-    },
-
-    // url: my_url,
-    // type: "GET",
-    // crossDomain: true,
-    // dataType: 'jsonp',
-
-    success: function(obj) {
-      alert(obj)
-      console.log("Success" + obj)
-      successCallback(obj, "success");
-    },
-    error: function(obj) {
-      console.log("Error" + obj)
-      errorCallback(obj, "error");
-    },
-    beforeSend: setHeader
-  });
-}
-
-// This function will be called if our request is successful.
-function successCallback(data, strStatus) {
-
-  // example: displaying all data to the textarea
-  document.getElementById("output").innerHTML = data;
-//   $.each(data.datastreams, function(i, item) {
-//     var message = "sensor " + i + ": " + item.values[0].value;
-//     document.getElementById("output").innerHTML += message + "\n";
-//   });
-  
-//   // example: displaying a specific item
-//   document.getElementById("sensor_0").innerHTML = data.datastreams[0].values[0].value;
-}
-
-function errorCallback(XMLHttpRequest, strStatus, errorThrown) {
-   document.getElementById("output").innerHMTL += "Status: "+strStatus +
-      "<br>Error thrown: " + errorThrown +
-      "<br>object: " + XMLHttpRequest;
-}
-
-// getOutputFromPachube()
-// setInterval(getOutputFromPachube, 15000); // reload every 15 seconds
+    function getOutputFromPachube() {
+        $.getJSON('http://api.allorigins.win/get?url=http%3A//api.marketinout.com/run/screen%3Fkey%3D522a8f2bfe9e4867&callback=?', function (data) {
+            $('#output').html(data.contents);
+        });
+    }
 </script>
 
 <textarea id="output" cols="50" rows="10"></textarea>
-<!--
-<table>
-  <tr>
-    <td><strong>Sensor 0 value: </strong></td>
-    <td><span id="sensor_0"></span></td>
-  </tr>
-</table>
---->
- 
+
 </body>
 </html>
