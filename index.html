@@ -1,83 +1,59 @@
 <html>
-    <head>
-        <style>
-            body { background: #358; color: #fff; padding: 50px; font-family: sans-serif; }
-            a { color: #fff; font-size: 40px; }
+<head>
+  <title>Pachube live reloading demo</title>
+  <script type="text/javascript" src="jquery-1.4.2.min.js"></script>
+  
+</head>
+<body onload="getOutputFromPachube();">
+<script type="text/javascript">
+var my_url = "https://api.marketinout.com/run/screen?key=522a8f2bfe9e4867";
 
-            section {
-                width: 800px;
-                margin: 0px auto;
-            }
+function getOutputFromPachube() {
+  $.ajax({
+    url: my_url,
+    type: "GET",
+    success: function(obj) {
+      console.log("Success" + obj)
+      successCallback(obj, "success");
+    },
+    error: function(obj) {
+      console.log("Error" + obj)
+      errorCallback(obj, "error");
+    },
+  });
+}
 
-            .task {
-                width: 400px;
-            }
+// This function will be called if our request is successful.
+function successCallback(data, strStatus) {
 
-            .strikeout {
-                text-decoration: line-through;
-            }
-        </style>
-        <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.1.min.js"></script>        
-    </head>
-    <body>
+  // example: displaying all data to the textarea
+  document.getElementById("output").innerHTML = "";
+  $.each(data.datastreams, function(i, item) {
+    var message = "sensor " + i + ": " + item.values[0].value;
+    document.getElementById("output").innerHTML += message + "\n";
+  });
+  
+  // example: displaying a specific item
+  document.getElementById("sensor_0").innerHTML = data.datastreams[0].values[0].value;
+}
 
-        <section>
-            <h1>To do app</h1>
+function errorCallback(XMLHttpRequest, strStatus, errorThrown) {
+   document.getElementById("output").innerHMTL += "Status: "+strStatus +
+      "<br>Error thrown: " + errorThrown +
+      "<br>object: " + XMLHttpRequest;
+}
 
-            <form>
-                <input type="text" id="task" />
-            </form>
+getOutputFromPachube()
+// setInterval(getOutputFromPachube, 15000); // reload every 15 seconds
+</script>
 
-            <div id="tasks">
-            </div>
+<textarea id="output" cols="50" rows="10"></textarea>
 
-            <div id="done">
-                <h3>Finished tasks</h3>
-
-            </div>
-        </section>
-
-        <script>
-
-
-            $('form').on('submit', function(e) {
-                e.preventDefault();
-
-                var newtask = $('#task').val();
-                var task_elem = $('<div>')
-                    .append('<input type="checkbox">')
-                    .addClass('task')
-                    .append(newtask);
-                $('#tasks').append(task_elem);
-
-                $.ajax({
-                    url: '/',
-                    method: 'post',
-                    dataType: 'json',
-                    data: {
-                        task: newtask,
-                    },
-                    success: function(response) {
-                        console.log(response);
-                        console.log(JSON.stringify(response));
-                    },
-                });
-
-            });
-        
-            $('body').on('click', 'input[type="checkbox"]', function() {
-                var task = $(this).parents('.task');
-
-                if(task.hasClass('strikeout')) {
-                    task.removeClass('strikeout');
-                    task.appendTo($('#tasks'));
-                } else {
-                    task.addClass('strikeout');
-                    task.appendTo($('#done'));
-                }
-            });
-
-
-        </script>
-    </body>
+<table>
+  <tr>
+    <td><strong>Sensor 0 value: </strong></td>
+    <td><span id="sensor_0"></span></td>
+  </tr>
+</table>
+</body>
 </html>
